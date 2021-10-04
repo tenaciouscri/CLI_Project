@@ -27,14 +27,14 @@ while not valid_input:
             user_item = input("What is the name of the item? ")
             count = warehouse1.count(user_item) + warehouse2.count(user_item)
             print(f"Amount available: {count}")
-            if user_item in warehouse1 and warehouse2:
+            if user_item in warehouse1 and user_item in warehouse2:
                 print("Location: Both Warehouses")
             elif user_item in warehouse1:
                 print("Location: Warehouse 1")
             elif user_item in warehouse2:
                 print("Location: Warehouse 2")
             else:
-                print("Not in stock")
+                print("Location: Not in stock")
             if warehouse1.count(user_item) > warehouse2.count(user_item):
                 print(f"Maximum availability: {warehouse1.count(user_item)} in Warehouse 1")
             elif warehouse1.count(user_item) < warehouse2.count(user_item):
