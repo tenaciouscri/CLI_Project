@@ -97,6 +97,9 @@ def total_amount(stock, user_item):
 #  Username input + welcome message
 username = input("Hello! What's your username? ")
 print()
+if username == "":
+    username = "guest"
+
 print(f"Welcome, {username}!")
 print()
 
