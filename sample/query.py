@@ -105,7 +105,7 @@ print(
 "What would you like to do?", 
 "1. List all items", 
 "2. Search an item and place an order", 
-"3. Browse by category"
+"3. Browse by category",
 "4. Quit", sep="\n"
 )
 print()
@@ -163,8 +163,29 @@ while not valid_input:  #  This way the user gets back to the choice selection i
     #  CHOICE 3
     
     elif user_input == 3:
-        pass
-    
+        categories = {}
+        for x in stock:
+            categories.setdefault(x["category"], 0)
+            categories[x["category"]] += 1
+        
+        count = 1
+        category_list = []
+        for key, value in categories.items():
+            print(count, ".", key, "(", value, ")")
+            category_list.append(key)
+            count += 1
+        
+        print()
+        
+        browse_category = int(input("Enter the number of the category you want to browse: "))
+        print()
+        print("List of", category_list[browse_category -1],"available:")
+        
+        for x in stock:
+            if x["category"] == category_list[browse_category -1]:
+                print(x["state"], x["category"], ", Warehouse:", x["warehouse"])
+        valid_input = True
+        
     #  CHOICE 4
     elif user_input == 4:
         valid_input = True
@@ -176,9 +197,3 @@ while not valid_input:  #  This way the user gets back to the choice selection i
 #  GOODBYE
 print()
 print(f"Thank you for your visit, {username}!")
-
-
-            # for i in numbers:
-            #     for j in i:
-            #     count += 1
-            #     sum += j
