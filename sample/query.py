@@ -1,4 +1,5 @@
 from data import stock
+from datetime import datetime
 from tabulate import tabulate
 
 #  Creating a new list for items only in warehouse 1
@@ -20,23 +21,84 @@ for warehouse_2_item in stock:
 total_warehouse_2 = len(warehouse_2)
 
 #  Function for case insensitive search in stock
-#  By converting both items in list
-def check_stock():
-    for item in warehouse_1:
-        if user_item.lower() == warehouse_1["state".lower(), "category".lower()]:
-            return True
+def check_stock(stock, user_item):
+    warehouse_1_count = 0
+    warehouse_2_count = 0
+    
+    '''
+    This part checks if the user input is present in stock
+    and counts of many instances of them are in it, adding
+    them to their respective warehouse count.
+    '''
+    for x in stock:
+        item_name = x["state"] + " " + x["category"]
+        if(item_name.lower() == user_item.lower()):
+            if x["warehouse"] == 1:
+                warehouse_1_count += 1
+            if x["warehouse"] == 2:
+                warehouse_2_count += 1
+    '''
+    Printing the total amount available
+    '''
+    print("Amount available:", warehouse_1_count + warehouse_2_count)
+    if (warehouse_1_count + warehouse_2_count) != 0:
+        print("Location: ")
+        '''
+        Printing one line for each item, listing their
+        warehouse number + days in stock by subtracting
+        the in_stock_since date from today's date.
+        '''
+        for x in stock:
+            item_name = x["state"] + " " + x["category"]
+            if(item_name.lower() == user_item.lower()):
+                today = datetime.today()
+                in_stock_since = datetime.strptime(x["date_of_stock"], "%Y-%m-%d %H:%M:%S")
+                days_in_stock = (today - in_stock_since)
+                print("- Warehouse", x["warehouse"], "(in stock for", days_in_stock.days, "days)")
+        print()
+        '''
+        Printing the warehouse with the largest amount
+        of user_item available at the moment. If the
+        value is identical or if the item is not in stock,
+        it'll inform the user.
+        '''
+        if warehouse_1_count > warehouse_2_count:
+            print("Maximum availability:", warehouse_1_count, "in Warehouse 1")
+        elif warehouse_2_count > warehouse_1_count:
+            print("Maximum availability", warehouse_2_count, "in Warehouse 2")
         else:
-            return False
+            print("The product is present in both warehouses in the same quantity.")
+    else:
+        print("Location: Not in stock.")
 
-# Function to transform str input into a list
-def Convert(string):
-    li = list(string.split(" "))
-    return li
+# Separate function to extract total amount only
+def total_amount(stock, user_item):
+    warehouse_1_count = 0
+    warehouse_2_count = 0
+    '''
+    This is the same function as above, I'm only
+    extracting this part that calculates the total
+    so that I can store the total_amount variable
+    and use it in case the user wants to order
+    something else other than the first chosen item.
+    '''
+    for x in stock:
+        item_name = x["state"] + " " + x["category"]
+        if(item_name.lower() == user_item.lower()):
+            if x["warehouse"] == 1:
+                warehouse_1_count += 1
+            if x["warehouse"] == 2:
+                warehouse_2_count += 1
+    
+    total_amount = (warehouse_1_count + warehouse_2_count)
+    return total_amount
+
 
 #  Username input + welcome message
 username = input("Hello! What's your username? ")
-
+print()
 print(f"Welcome, {username}!")
+print()
 
 #  Showing list of options
 print(
@@ -46,10 +108,12 @@ print(
 "3. Browse by category"
 "4. Quit", sep="\n"
 )
+print()
 
 valid_input = False
 while not valid_input:  #  This way the user gets back to the choice selection if they enter an invalid input
     user_input = int(input("Please select your choice by entering its corresponding number: "))
+    print()
     
     #  CHOICE 1
     if user_input == 1:
@@ -68,66 +132,39 @@ while not valid_input:  #  This way the user gets back to the choice selection i
         anything_else = False
         while not anything_else:  # This way the user gets back to the item selection if they want to order something else
             user_item = input("What is the name of the item? ")
-            user_item_list = Convert(user_item)
-            print(user_item_list)
-            
-            # if check_stock():
-            #     total_amount = 0
-                # warehouse_1_amount = 0
-                # for x, y in warehouse_1:
-                #     if x["state"] == user_item[0] and y["category"] == user_item[1]:
-                #         warehouse_1_amount += 1
-                # warehouse_2_amount = 0
-                # for x, y in warehouse_1:
-                #     if x["state"] == user_item[0] and y["category"] == user_item[1]:
-                #         warehouse_2_amount += 1
-                # total_amount = (warehouse_1_amount + warehouse_2_amount)
-                # print(f"Amount available: {total_amount}")
-
-            # else:
-            #     print("Location: Not in stock")
-#             count = warehouse1.count(user_item) + warehouse2.count(user_item)
-#             print(f"Amount available: {count}")
-#             if user_item in warehouse1 and user_item in warehouse2:
-#                 print("Location: Both Warehouses")
-#             elif user_item in warehouse1:
-#                 print("Location: Warehouse 1")
-#             elif user_item in warehouse2:
-#                 print("Location: Warehouse 2")
-#             else:
-#                 print("Location: Not in stock")
-#             if warehouse1.count(user_item) > warehouse2.count(user_item):
-#                 print(f"Maximum availability: {warehouse1.count(user_item)} in Warehouse 1")
-#             elif warehouse1.count(user_item) < warehouse2.count(user_item):
-#                 print(f"Maximum availability: {warehouse2.count(user_item)} in Warehouse 2")
-#             elif warehouse1.count(user_item) == warehouse2.count(user_item):
-#                 pass
-#             print()
-#             if count >= 1:  # If the item doesn't exist, the user gets prompted to either order something else or quit
-#                 order_yn = input("Would you like to place an order for this item? (Y/N) ")
-#                 valid_amount = False
-#                 if order_yn == "Y":
-#                     while not valid_amount:  # If the user refuses to order the maximum amount, they get prompted to enter an amount of their choice
-#                         ordered_item = int(input("How many would you like to order? "))
-#                         if ordered_item > count:
-#                             print(f"Error: the requested amount exceeds the maximum amount available.\nThe maximum amount that can be ordered is {count}.")
-#                             print()
-#                             max_amount = input("Would you like to order the maximum amount? (Y/N) ")
-#                             if max_amount == "Y":
-#                                 print(f"{user_item} ordered: {count}")
-#                                 valid_amount = True
-#                             else:
-#                                 valid_amount = False
-#                         elif ordered_item < count:
-#                             print(f"{user_item} ordered: {ordered_item}")
-#                             valid_amount = True
-#             continue_shopping = input("Would you like to order anything else? (Y/N) ")
-#             if continue_shopping == "Y":
-#                 anything_else = False
-#             else:
-#                 anything_else = True
-#         valid_input = True
-
+            check_stock(stock, user_item)
+            print()
+        
+        # Asking the user if they want to order
+            order_yn = input("Would you like to place an order for this item? (Y/N) ")
+            valid_amount = False
+            if order_yn == "Y":
+                while not valid_amount:  # If the user refuses to order the maximum amount, they get prompted to enter an amount of their choice
+                    ordered_item = int(input("How many would you like to order? "))
+                    if ordered_item > total_amount(stock, user_item):
+                        print(f"Error: the requested amount exceeds the maximum amount available.\nThe maximum amount that can be ordered is {total_amount(stock, user_item)}.")
+                        print()
+                        max_amount = input("Would you like to order the maximum amount? (Y/N) ")
+                        if max_amount == "Y":
+                            print(f"{user_item} ordered: {total_amount(stock, user_item)}")
+                            valid_amount = True
+                        else:
+                            valid_amount = False
+                    elif ordered_item < total_amount(stock, user_item):
+                        print(f"{user_item} ordered: {ordered_item}")
+                        valid_amount = True
+            continue_shopping = input("Would you like to order anything else? (Y/N) ")
+            if continue_shopping == "Y":
+                anything_else = False
+            else:
+                anything_else = True
+        valid_input = True
+    
+    #  CHOICE 3
+    
+    elif user_input == 3:
+        pass
+    
     #  CHOICE 4
     elif user_input == 4:
         valid_input = True
