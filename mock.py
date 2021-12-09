@@ -2,9 +2,27 @@
 import json
 from random import random
 
-NAME_PREFIX = ('Brand new', 'Second hand', 'Almost new', 'High quality', 'Cheap', 'Elegant', 'Funny', 'Exceptional')
+NAME_PREFIX = (
+    "Brand new",
+    "Second hand",
+    "Almost new",
+    "High quality",
+    "Cheap",
+    "Elegant",
+    "Funny",
+    "Exceptional",
+)
 
-NAME_MAIN = ('Monitor', 'Laptop', 'Tablet', 'Smartphone', 'Headphones', 'Keyboard', 'Mouse', 'Router')
+NAME_MAIN = (
+    "Monitor",
+    "Laptop",
+    "Tablet",
+    "Smartphone",
+    "Headphones",
+    "Keyboard",
+    "Mouse",
+    "Router",
+)
 
 
 def rand(options):
@@ -15,7 +33,7 @@ def rand(options):
 
 def composed_name(prefix=NAME_PREFIX, suffix=NAME_MAIN):
     """Return a random name."""
-    return rand(prefix).capitalize() + ' ' + rand(suffix).lower()
+    return rand(prefix).capitalize() + " " + rand(suffix).lower()
 
 
 def create(amount=100):
@@ -44,8 +62,10 @@ def create_and_save(amount=100, filename="warehouse"):
 
 
 # print(Counter(data))
-confirm = input("This will replace the data in the exercise."
-                " Are you sure you want to proceed?(y/n) ")
+confirm = input(
+    "This will replace the data in the exercise."
+    " Are you sure you want to proceed?(y/n) "
+)
 
 if confirm.lower() == "y":
     create_and_save(filename="warehouse1")
